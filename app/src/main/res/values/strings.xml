@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">PTRS_gutte</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_home">Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="home_tab_1">Uploaded Document</string>
+    <string name="home_tab_2">unuploaded document</string>
+    <string name="home_tab_3">Pending Document</string>
+    <string name="title_activity_home_tab_1__case_paper_ditails">HomeTab_1_CasePaperDitails</string>
+    <string name="title_activity_home_tab2_reports_ditails">HomeTab2_reportsDitails</string>
+    <string name="title_activity_home_tab_3_medical_ditails">HomeTab_3_medicalDitails</string>
+</resources>

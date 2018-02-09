@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/tech"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.ajdeveloper.ptrs_gutte.Login"
+    tools:showIn="@layout/activity_login">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="16dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/login_logo"/>
+
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/aadhar_label"
+                android:layout_marginLeft="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Aadhar Number"
+                android:textStyle="italic"
+                android:textColor="#f0f0f0"/>
+            <TextView
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/aadhar_tv"
+
+                android:padding="12dp"
+                android:drawablePadding="12dp"
+              android:textStyle="bold"
+                android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+                android:textColor="#1e7c7c"/>
+
+            <TextView
+                android:id="@+id/edit_text_label"
+                android:layout_marginLeft="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter Aadhar Number"
+                android:textStyle="italic"
+                android:textColor="#f0f0f0"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Enter Aadhar Card Number"
+                android:id="@+id/Aahar_number"
+                android:ems="10"
+                android:padding="12dp"
+                android:drawablePadding="12dp"
+                android:textColor="#2baeae"
+                android:textColorHint="#f0f0f0"
+                android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+                />
+<!--
+            <EditText
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:drawablePadding="16dp"
+                android:padding="16dp"
+                android:hint="Enter OTP"
+                android:textColorHint="#fff"
+                android:layout_marginTop="4dp"
+                android:textColor="#fff"
+                android:drawableLeft="@drawable/ic_lock_outline_black_24dp"
+                android:id="@+id/otp_number">
+            </EditText>
+-->
+
+
+
+
+
+
+        </LinearLayout>
+
+</RelativeLayout>
