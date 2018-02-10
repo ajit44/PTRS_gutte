@@ -6,6 +6,6 @@ package com.ajdeveloper.ptrs_gutte;
 
 public class URL {
     static String OTP="";
-    static String url="http://192.168.0.3/PTRS/",Mobile_No;
+    static String url="http://192.168.0.4/PTRS/",Mobile_No,static_Aadharno;
 
 }

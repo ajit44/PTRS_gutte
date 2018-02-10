@@ -56,12 +56,7 @@ public class HomeTab2_reportsDitails extends AppCompatActivity {
             report_name =(TextView)findViewById(R.id.report_name);
 
 
-            description_type.setText(HomeTab_2.reportType_Temp);
-            lab_name.setText(HomeTab_2.reportLabName_Temp);
-                doctor_name.setText(HomeTab_2.reportDoctorNameF_Temp+" "+HomeTab_2.reportDoctorNameM_Temp+" "+HomeTab_2.reportDoctorNameL_Temp);
-                description.setText(HomeTab_2.reportDescription_Temp);
-                description_date.setText(HomeTab_2.reportDate_Temp);
-            report_name.setText(HomeTab_2.reportName_Temp);
+
         }catch (Exception s){
             Toast.makeText(this, "listClick 2: "+s, Toast.LENGTH_SHORT).show();
         }
@@ -76,7 +71,7 @@ public class HomeTab2_reportsDitails extends AppCompatActivity {
             protected String doInBackground(String... params) {
                 DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
 
-                     HttpPost httppost = new HttpPost("http://192.168.0.3/MRTS/patient/"+"Images/"+"http://192.168.0.3/MRTS/patient/"+"/Reports/"+HomeTab_2.reportDate_Temp.replace("/", "")+"/script.php?list_files");
+                     HttpPost httppost = new HttpPost("http://192.168.0.3/MRTS/patient/"+"Images/"+"http://192.168.0.3/MRTS/patient/"+"/Reports/"+"/script.php?list_files");
                /* HttpPost httppost = new HttpPost("http://192.168.0.104/Paper/"+
                         Url.scheme.replace(" ","%20")+"/"+
                         Url.diploma_g_dipartment.replace(" ","%20")+"/"+

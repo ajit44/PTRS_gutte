@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.stfalcon.frescoimageviewer.ImageViewer;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -33,6 +35,7 @@ import java.io.InputStreamReader;
 
 public class HomeTab_3 extends Fragment{
 
+    private ImageOverlayView overlayView;
 
 
 
@@ -42,10 +45,10 @@ public class HomeTab_3 extends Fragment{
     public static int cnt, cnt1;
 
     public static String myJSON;
-    /*tab 2*/  public static String DoctorID_Temp, PrescriptionID_Temp, PrescPicture_Temp, Date_Temp, D_Last_name_Temp, D_first_name_Temp, D_mid_name_Temp;
-    public static String DoctorID[],PrescriptionID[],PrescPicture[],Date[],D_Last_name[],D_first_name[],D_mid_name[];
+    /*tab 1*/  public static String doc_name_Temp,d_date_Temp;
+    public static String doc_name[],d_date[],descriptions[],posters[];
     private ProgressDialog progress;
-    final Context context = getActivity();
+     Context context;
 
     @Nullable
     @Override
@@ -57,23 +60,17 @@ public class HomeTab_3 extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         listViewmedical = (ListView)view.findViewById(R.id.listViewmedical);
         try { getData();
+            context = getActivity();
             listViewmedical.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                   //  TextView textView = (TextView) v.findViewById(R.id.fname);
                   //  send_ditails= textView.getText().toString();
-                    DoctorID_Temp =  DoctorID[position];
-                    PrescriptionID_Temp = PrescriptionID[position];
-                    PrescPicture_Temp =  PrescPicture[position];
-                    Date_Temp =  Date[position];
-                    D_Last_name_Temp = D_Last_name[position];
-                    D_first_name_Temp =  D_first_name[position];
-                    D_mid_name_Temp =  D_mid_name[position];
 
 
-
-                     Intent s = new Intent(getActivity(),HomeTab_3_medicalDitails.class);
-                    startActivity(s);
+                    showPicker(position);
+                    // Intent s = new Intent(getActivity(),HomeTab_1_CasePaperDitails.class);
+                  //  startActivity(s);
                 }
             });
         }catch (Exception s){
@@ -81,6 +78,42 @@ public class HomeTab_3 extends Fragment{
         }
     }
 
+
+    protected void showPicker(int startPosition) {
+        ImageViewer.Builder builder = new ImageViewer.Builder<>(context, posters)
+                //  new ImageViewer.Builder<>(this, doc_name)
+                .setStartPosition(startPosition)
+                .setImageChangeListener(getImageChangeListener())
+
+
+                .setContainerPadding(context, R.dimen.padding)
+                .setImageMargin(context, R.dimen.image_margin)
+
+                .setOverlayView(overlayView);
+
+
+        if (1==1) {
+            //  overlayView = new ImageOverlayView(this);
+            overlayView =new ImageOverlayView(context);
+            builder.setOverlayView(overlayView);
+            builder.setImageChangeListener(getImageChangeListener());
+        }
+        builder.show();
+
+
+
+    }
+
+    private ImageViewer.OnImageChangeListener getImageChangeListener() {
+        return new ImageViewer.OnImageChangeListener() {
+            @Override
+            public void onImageChange(int position) {
+                String url = posters[position];
+                overlayView.setShareText(url);
+                overlayView.setDescription(descriptions[position]);
+            }
+        };
+    }
 
 
 
@@ -93,7 +126,7 @@ public class HomeTab_3 extends Fragment{
                 DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
 
 
-                    httppost = new HttpPost("http://192.168.0.3/MRTS/patient/" + "medical_priscription.php?p_id=" + "11223344");
+                        httppost = new HttpPost(URL.url+ "pending_doc.php?p_id=" +URL.static_Aadharno);
 
                 // Depends on your web service
                 httppost.setHeader("Content-type", "application/json");
@@ -131,6 +164,7 @@ public class HomeTab_3 extends Fragment{
                 try {
 
                     myJSON=result;
+                    Toast.makeText(context, "33 "+myJSON, Toast.LENGTH_SHORT).show();
                     showList();
 
                 }catch (Exception f){
@@ -154,14 +188,11 @@ public class HomeTab_3 extends Fragment{
                 cnt++;
             }
 
-                DoctorID = new String[cnt];
-                PrescriptionID = new String[cnt];
-                PrescPicture = new String[cnt];
-                Date = new String[cnt];
-                D_Last_name = new String[cnt];
-                D_first_name = new String[cnt];
-                D_mid_name = new String[cnt];
+                d_date = new String[cnt];
+                doc_name = new String[cnt];
 
+            descriptions= new String[cnt];
+            posters= new String[cnt];
 
 
 
@@ -170,14 +201,10 @@ public class HomeTab_3 extends Fragment{
 
                 //descriptionType[cnt1]=c.getString("descriptionType");
 
-
-                    DoctorID[cnt1] = c.getString("DoctorID");
-                    PrescriptionID[cnt1] = c.getString("PrescriptionID");
-                    PrescPicture[cnt1] = c.getString("PrescPicture");
-                    Date[cnt1] = c.getString("Date");
-                    D_Last_name[cnt1] = c.getString("D_Last_name");
-                    D_first_name[cnt1] = c.getString("D_first_name");
-                    D_mid_name[cnt1] = c.getString("D_mid_name");
+                    d_date[cnt1] = c.getString("d_date");
+                    doc_name[cnt1] = c.getString("doc_name");
+                descriptions[cnt1] = "Date : "+d_date[cnt1]+"\nName : "+doc_name[cnt1];
+                posters[cnt1] =URL.url+"Documents/"+URL.static_Aadharno+"/"+doc_name[cnt1]+".jpg";
 
                 cnt1++;
             }
@@ -185,7 +212,7 @@ public class HomeTab_3 extends Fragment{
           //  setTitle("sfse1");
 
            
-                layout_medical_priscrip r = new layout_medical_priscrip(getActivity(), DoctorID,PrescriptionID, PrescPicture,Date,D_Last_name,D_first_name,D_mid_name);
+                layout_medical_priscrip r = new layout_medical_priscrip(getActivity(), doc_name,d_date,posters);
                 listViewmedical.setAdapter(r);
 
 

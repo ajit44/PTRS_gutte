@@ -57,11 +57,6 @@ public class HomeTab_1_CasePaperDitails extends AppCompatActivity {
                 description =(TextView)findViewById(R.id.description);
 
 
-                description_type.setText(HomeTab_1.descriptionType_Temp);
-                hospital_name.setText(HomeTab_1.hospitalName_Temp);
-                doctor_name.setText(HomeTab_1.doctorNameF_Temp+" "+HomeTab_1.doctorNameM_Temp+" "+HomeTab_1.doctorNameL_Temp);
-                description.setText(HomeTab_1.description_Temp);
-                description_date.setText(HomeTab_1.descriptionDate_Temp);
 
            // getData();
         }catch (Exception s){
@@ -78,7 +73,7 @@ public class HomeTab_1_CasePaperDitails extends AppCompatActivity {
             protected String doInBackground(String... params) {
                 DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
 
-                 HttpPost httppost = new HttpPost("http://192.168.0.3/MRTS/patient/"+"Images/"+"11223344"+"/Casepaper/"+HomeTab_1.descriptionDate_Temp.replace("/", "")+"/script.php?list_files");
+                 HttpPost httppost = new HttpPost("http://192.168.0.3/MRTS/patient/"+"Images/"+"11223344"+"/Casepaper/"+"/script.php?list_files");
                /* HttpPost httppost = new HttpPost("http://192.168.0.104/Paper/"+
                         Url.scheme.replace(" ","%20")+"/"+
                         Url.diploma_g_dipartment.replace(" ","%20")+"/"+

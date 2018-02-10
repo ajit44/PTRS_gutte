@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.stfalcon.frescoimageviewer.ImageViewer;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -33,6 +35,7 @@ import java.io.InputStreamReader;
 
 public class HomeTab_2 extends Fragment{
 
+    private ImageOverlayView overlayView;
 
 
 
@@ -42,10 +45,10 @@ public class HomeTab_2 extends Fragment{
     public static int cnt, cnt1;
 
     public static String myJSON;
-    /*tab 2*/  static String reportDoctorID_Temp, reportLabLD_Temp, reportLabName_Temp, reportType_Temp, reportName_Temp, reportDescription_Temp, reportPic_Temp, reportDate_Temp, reportDoctorNameL_Temp, reportDoctorNameF_Temp, reportDoctorNameM_Temp;
-    public static String reportDoctorID[],reportLabLD[],reportLabName[],reportType[],reportName[],reportDescription[],reportPic[],reportDate[],reportDoctorNameL[],reportDoctorNameF[],reportDoctorNameM[];
+    /*tab 1*/  public static String doc_name_Temp,d_date_Temp;
+    public static String doc_name[],d_date[],descriptions[],posters[];
     private ProgressDialog progress;
-    final Context context = getActivity();
+     Context context;
 
     @Nullable
     @Override
@@ -66,34 +69,61 @@ public class HomeTab_2 extends Fragment{
 
 
         try {
+            context = getActivity();
 
             listViewReport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    //  TextView textView = (TextView) v.findViewById(R.id.fname);
-                    //  send_ditails= textView.getText().toString();
-                    reportDoctorID_Temp =  reportDoctorID[position];
-                    reportLabLD_Temp = reportLabLD[position];
-                    reportLabName_Temp =  reportLabName[position];
-                    reportType_Temp =  reportType[position];
-                    reportName_Temp = reportName[position];
-                    reportDescription_Temp =  reportDescription[position];
-                    reportPic_Temp =  reportPic[position];
-                    reportDate_Temp =  reportDate[position];
-                    reportDoctorNameL_Temp =   reportDoctorNameL[position];
-                    reportDoctorNameF_Temp =   reportDoctorNameF[position];
-                    reportDoctorNameM_Temp = reportDoctorNameM[position];
+                  //  TextView textView = (TextView) v.findViewById(R.id.fname);
+                  //  send_ditails= textView.getText().toString();
+                    d_date_Temp =  d_date[position];
+                    doc_name_Temp = doc_name[position];
 
 
-
-                    Intent s = new Intent(getActivity(),HomeTab2_reportsDitails.class);
-                    startActivity(s);
+                    showPicker(position);
+                    // Intent s = new Intent(getActivity(),HomeTab_1_CasePaperDitails.class);
+                  //  startActivity(s);
                 }
             });
         }catch (Exception s){
             Toast.makeText(getActivity(), "listClick : "+s, Toast.LENGTH_SHORT).show();
 
     }
+    }
+    protected void showPicker(int startPosition) {
+        ImageViewer.Builder builder = new ImageViewer.Builder<>(context, posters)
+                //  new ImageViewer.Builder<>(this, doc_name)
+                .setStartPosition(startPosition)
+                .setImageChangeListener(getImageChangeListener())
+
+
+                .setContainerPadding(context, R.dimen.padding)
+                .setImageMargin(context, R.dimen.image_margin)
+
+                .setOverlayView(overlayView);
+
+
+        if (1==1) {
+            //  overlayView = new ImageOverlayView(this);
+            overlayView =new ImageOverlayView(context);
+            builder.setOverlayView(overlayView);
+            builder.setImageChangeListener(getImageChangeListener());
+        }
+        builder.show();
+
+
+
+    }
+
+    private ImageViewer.OnImageChangeListener getImageChangeListener() {
+        return new ImageViewer.OnImageChangeListener() {
+            @Override
+            public void onImageChange(int position) {
+                String url = posters[position];
+                overlayView.setShareText(url);
+                overlayView.setDescription(descriptions[position]);
+            }
+        };
     }
 
 
@@ -107,7 +137,8 @@ public class HomeTab_2 extends Fragment{
             protected String doInBackground(String... params) {
                 DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
 
-                        httppost = new HttpPost("http://192.168.0.3/MRTS/patient/"+ "reports.php?p_id=" +"11223344");
+
+                        httppost = new HttpPost(URL.url+ "verified_doc.php?p_id=" +URL.static_Aadharno);
 
                 // Depends on your web service
                 httppost.setHeader("Content-type", "application/json");
@@ -145,11 +176,12 @@ public class HomeTab_2 extends Fragment{
                 try {
 
                     myJSON=result;
+                    Toast.makeText(context, "22 "+myJSON, Toast.LENGTH_SHORT).show();
                     showList();
 
                 }catch (Exception f){
 
-                    Toast.makeText(getActivity(), "error recive ::"+f, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "error2 recive ::"+f, Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -168,18 +200,11 @@ public class HomeTab_2 extends Fragment{
                 cnt++;
             }
 
-                reportDoctorID = new String[cnt];
-                reportLabLD = new String[cnt];
-                reportLabName = new String[cnt];
-                reportType = new String[cnt];
-                reportName = new String[cnt];
-                reportDescription = new String[cnt];
-                reportPic = new String[cnt];
-                reportDate = new String[cnt];
-                reportDoctorNameL = new String[cnt];
-                reportDoctorNameF = new String[cnt];
-                reportDoctorNameM = new String[cnt];
+                d_date = new String[cnt];
+                doc_name = new String[cnt];
 
+            descriptions= new String[cnt];
+            posters= new String[cnt];
 
 
 
@@ -188,19 +213,10 @@ public class HomeTab_2 extends Fragment{
 
                 //descriptionType[cnt1]=c.getString("descriptionType");
 
-
-                    reportDoctorID[cnt1] = c.getString("DoctorID");
-                    reportLabLD[cnt1] = c.getString("LabID");
-                    reportLabName[cnt1] = c.getString("LabName");
-                    reportType[cnt1] = c.getString("ReportType");
-                    reportName[cnt1] = c.getString("ReportName");
-                    reportDescription[cnt1] = c.getString("Description");
-                    reportPic[cnt1] = c.getString("Pic");
-                    reportDate[cnt1] = c.getString("Date");
-                    reportDoctorNameL[cnt1] = c.getString("D_Last_name");
-                    reportDoctorNameF[cnt1] = c.getString("D_first_name");
-                    reportDoctorNameM[cnt1] = c.getString("D_mid_name");
-
+                    d_date[cnt1] = c.getString("d_date");
+                    doc_name[cnt1] = c.getString("doc_name");
+                descriptions[cnt1] = "Date : "+d_date[cnt1]+"\nName : "+doc_name[cnt1];
+                posters[cnt1] =URL.url+"Documents/"+URL.static_Aadharno+"/"+doc_name[cnt1]+".jpg";
 
                 cnt1++;
             }
@@ -208,9 +224,8 @@ public class HomeTab_2 extends Fragment{
           //  setTitle("sfse1");
 
 
-                layout_reports r = new layout_reports(getActivity(), reportType, reportDate,reportName, reportDoctorNameL, reportDoctorNameF, reportDoctorNameM, reportLabName);
-                listViewReport.setAdapter(r);
-
+            layout_reports a = new layout_reports(getActivity(), doc_name,d_date,posters);
+                listViewReport.setAdapter(a);
 
 
             if(cnt==0) {

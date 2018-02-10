@@ -227,6 +227,7 @@ public class Login extends AppCompatActivity {
                 aadhar_label.setVisibility(View.VISIBLE);
                 aadhar_tv.setVisibility(View.VISIBLE);
                 aadhar_tv.setText(aadharno_send);
+                URL.static_Aadharno=aadharno_send;
                 edit_text_label.setText("Enter OTP");
                 Drawable img = getApplicationContext().getResources().getDrawable( R.drawable.ic_lock_outline_black_24dp );
                 img.setBounds( 0, 0, 60, 60 );
@@ -236,11 +237,11 @@ public class Login extends AppCompatActivity {
                 Aadhar_OTP.setHint("OTP");
                 log_in.setText("Verify");
                 flg_OTP_AAdhar=1;
-                Toast.makeText(context, "Mobile number get::"+URL.Mobile_No, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, "Mobile number get::"+URL.Mobile_No, Toast.LENGTH_SHORT).show();
                 //send OTP
                 try {
                     URL.OTP = String.format("%04d", random.nextInt(10000));
-                    smsManager.sendTextMessage(URL.Mobile_No, null, URL.OTP, null, null);
+                 //   smsManager.sendTextMessage(URL.Mobile_No, null, URL.OTP, null, null);
                     Toast.makeText(context, "OTP Send: " + URL.OTP, Toast.LENGTH_SHORT).show();
                 }catch (Exception e) {
                    // e.printStackTrace();

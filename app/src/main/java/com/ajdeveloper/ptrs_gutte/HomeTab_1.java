@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.stfalcon.frescoimageviewer.ImageViewer;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -33,6 +35,7 @@ import java.io.InputStreamReader;
 
 public class HomeTab_1 extends Fragment{
 
+    private ImageOverlayView overlayView;
 
     ListView listViewCasePaper;
     private static final String TAG_RESULTS = "result";
@@ -40,8 +43,8 @@ public class HomeTab_1 extends Fragment{
     public static int cnt, cnt1;
 
     public static String myJSON;
-    /*tab 1*/  public static String descriptionType_Temp,description_Temp,descriptionDate_Temp,doctorNameL_Temp,doctorNameF_Temp,doctorNameM_Temp,hospitalName_Temp,casepaperPic_Temp,hospitalID_Temp,doctorID_Temp,patientPic_Temp,patientNameL_Temp,patientNameF_Temp,patientNameM_Temp,patientEmail_Temp;
-    public static String descriptionType[],description[],descriptionDate[],doctorNameL[],doctorNameF[],doctorNameM[],hospitalName[],casepaperPic[],hospitalID[],doctorID[],patientPic[],patientNameL[],patientNameF[],patientNameM[],patientEmail[];
+    /*tab 1*/  public static String doc_name_Temp,d_date_Temp;
+    public static String doc_name[],d_date[],action[],descriptions[],posters[];
     private ProgressDialog progress;
      Context context;
 
@@ -69,22 +72,11 @@ public class HomeTab_1 extends Fragment{
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                   //  TextView textView = (TextView) v.findViewById(R.id.fname);
                   //  send_ditails= textView.getText().toString();
-                    description_Temp =  description[position];
-                    descriptionType_Temp = descriptionType[position];
-                    doctorID_Temp =  doctorID[position];
-                    hospitalID_Temp =  hospitalID[position];
-                    casepaperPic_Temp = casepaperPic[position];
-                    descriptionDate_Temp =  descriptionDate[position];
-                    patientNameL_Temp =  patientNameL[position];
-                    patientNameF_Temp =  patientNameF[position];
-                    patientNameM_Temp =   patientNameM[position];
-                    patientEmail_Temp =   patientEmail[position];
-                    doctorNameL_Temp = doctorNameL[position];
-                    doctorNameF_Temp = doctorNameF[position];
-                    doctorNameM_Temp = doctorNameM[position];
-                    hospitalName_Temp = hospitalName[position];
+                    d_date_Temp =  d_date[position];
+                    doc_name_Temp = doc_name[position];
 
 
+                    showPicker(position);
                     // Intent s = new Intent(getActivity(),HomeTab_1_CasePaperDitails.class);
                   //  startActivity(s);
                 }
@@ -94,6 +86,41 @@ public class HomeTab_1 extends Fragment{
         }
     }
 
+    protected void showPicker(int startPosition) {
+        ImageViewer.Builder builder = new ImageViewer.Builder<>(context, posters)
+                //  new ImageViewer.Builder<>(this, doc_name)
+                .setStartPosition(startPosition)
+                .setImageChangeListener(getImageChangeListener())
+
+
+                .setContainerPadding(context, R.dimen.padding)
+                .setImageMargin(context, R.dimen.image_margin)
+
+                .setOverlayView(overlayView);
+
+
+        if (1==1) {
+            //  overlayView = new ImageOverlayView(this);
+            overlayView =new ImageOverlayView(context);
+            builder.setOverlayView(overlayView);
+            builder.setImageChangeListener(getImageChangeListener());
+        }
+        builder.show();
+
+
+
+    }
+
+    private ImageViewer.OnImageChangeListener getImageChangeListener() {
+        return new ImageViewer.OnImageChangeListener() {
+            @Override
+            public void onImageChange(int position) {
+                String url = posters[position];
+                overlayView.setShareText(url);
+                overlayView.setDescription(descriptions[position]);
+            }
+        };
+    }
 
 
 
@@ -106,7 +133,7 @@ public class HomeTab_1 extends Fragment{
                 DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
 
 
-                        httppost = new HttpPost("http://192.168.0.3/MRTS/patient/" + "casepaper.php?p_id=" +"11223344");
+                        httppost = new HttpPost(URL.url+ "uploaded_doc.php?p_id=" +URL.static_Aadharno);
 
                 // Depends on your web service
                 httppost.setHeader("Content-type", "application/json");
@@ -144,6 +171,7 @@ public class HomeTab_1 extends Fragment{
                 try {
 
                     myJSON=result;
+                    Toast.makeText(context, "mJ "+myJSON, Toast.LENGTH_SHORT).show();
                     showList();
 
                 }catch (Exception f){
@@ -167,43 +195,24 @@ public class HomeTab_1 extends Fragment{
                 cnt++;
             }
 
-                description = new String[cnt];
-                descriptionType = new String[cnt];
-                doctorID = new String[cnt];
-                hospitalID = new String[cnt];
-                casepaperPic = new String[cnt];
-                descriptionDate = new String[cnt];
-                patientNameL = new String[cnt];
-                patientNameF = new String[cnt];
-                patientNameM = new String[cnt];
-                patientEmail = new String[cnt];
-                doctorNameL = new String[cnt];
-                doctorNameF = new String[cnt];
-                doctorNameM = new String[cnt];
-                hospitalName = new String[cnt];
+                d_date = new String[cnt];
+                doc_name = new String[cnt];
+                action = new String[cnt];
+            descriptions= new String[cnt];
+            posters= new String[cnt];
 
 
 
             for(int i=0;i<peoples.length();i++){
                 JSONObject c = peoples.getJSONObject(i);
 
-                //descriptionType[cnt1]=c.getString("descriptionType");
+                //doc_name[cnt1]=c.getString("doc_name");
 
-                    description[cnt1] = c.getString("Description");
-                    descriptionType[cnt1] = c.getString("Type");
-                    doctorID[cnt1] = c.getString("DoctorID");
-                    hospitalID[cnt1] = c.getString("HosID");
-                    casepaperPic[cnt1] = c.getString("Pic");
-                    descriptionDate[cnt1] = c.getString("Date");
-                    patientNameL[cnt1] = c.getString("P_last_name");
-                    patientNameF[cnt1] = c.getString("P_mid_name");
-                    patientNameM[cnt1] = c.getString("P_first_name");
-                    patientEmail[cnt1] = c.getString("P_email");
-
-                    doctorNameL[cnt1] = c.getString("D_Last_name");
-                    doctorNameF[cnt1] = c.getString("D_first_name");
-                    doctorNameM[cnt1] = c.getString("D_mid_name");
-                    hospitalName[cnt1] = c.getString("Hos_Name");
+                    d_date[cnt1] = c.getString("d_date");
+                    doc_name[cnt1] = c.getString("doc_name");
+                    action[cnt1] = c.getString("action");
+                descriptions[cnt1] = "Date : "+d_date[cnt1]+"\nName : "+doc_name[cnt1];
+                posters[cnt1] =URL.url+"Documents/"+URL.static_Aadharno+"/"+doc_name[cnt1]+".jpg";
 
                 cnt1++;
             }
@@ -211,7 +220,7 @@ public class HomeTab_1 extends Fragment{
           //  setTitle("sfse1");
 
 
-                layout_casepaper a = new layout_casepaper(getActivity(), descriptionType, descriptionDate, doctorNameL, doctorNameF, doctorNameM, hospitalName);
+                layout_casepaper a = new layout_casepaper(getActivity(), doc_name,d_date,action,posters);
                 listViewCasePaper.setAdapter(a);
 
 

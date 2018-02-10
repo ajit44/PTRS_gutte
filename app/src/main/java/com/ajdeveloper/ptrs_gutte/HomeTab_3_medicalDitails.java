@@ -55,10 +55,7 @@ public class HomeTab_3_medicalDitails extends AppCompatActivity {
                
 
 
-            Prescription_id.setText(HomeTab_3.PrescriptionID_Temp);
 
-                doctor_name.setText(HomeTab_3.D_first_name_Temp+" "+HomeTab_3.D_mid_name_Temp+" "+HomeTab_3.D_Last_name_Temp);
-               date.setText(HomeTab_3.Date_Temp);
         }catch (Exception s){
             Toast.makeText(this, "listClick : "+s, Toast.LENGTH_SHORT).show();
         }
@@ -73,7 +70,7 @@ public class HomeTab_3_medicalDitails extends AppCompatActivity {
             protected String doInBackground(String... params) {
                 DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
 
-                 HttpPost httppost = new HttpPost("http://192.168.0.3/MRTS/patient/"+"Images/"+"11223344"+"/Medical/"+HomeTab_3.Date_Temp.replace("/", "")+"/script.php?list_files");
+                 HttpPost httppost = new HttpPost("http://192.168.0.3/MRTS/patient/"+"Images/"+"11223344"+"/Medical/"+"/script.php?list_files");
                /* HttpPost httppost = new HttpPost("http://192.168.0.104/Paper/"+
                         Url.scheme.replace(" ","%20")+"/"+
                         Url.diploma_g_dipartment.replace(" ","%20")+"/"+

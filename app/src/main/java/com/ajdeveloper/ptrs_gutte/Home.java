@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -34,6 +35,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -119,6 +122,7 @@ public String m1="",m2="";
 
       //  names.setText("dsf");
 try {
+    Fresco.initialize(this);
    //.............. set data on profile
    // name.setText(State_and_City.FirstName+" "+State_and_City.MiddleName+" "+State_and_City.LastName);
   //  email.setText(State_and_City.Email);
@@ -142,6 +146,16 @@ try {
             startActivity(i);
         }
     });*/
+
+
+    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    fab.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+           // Intent c = new Intent(getApplicationContext(),ContactsView.class);
+         //   startActivity(c);
+        }
+    });
 }catch (Exception s){
     Toast.makeText(this, "sss "+s, Toast.LENGTH_SHORT).show();
 }
